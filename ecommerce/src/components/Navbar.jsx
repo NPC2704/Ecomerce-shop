@@ -4,7 +4,20 @@ import React from "react";
 import styled from "styled-components";
 import { mobile } from "../responsive";
 import image from "../assets/shop.png";
-import user from "../assets/user.png";
+import Login from "../pages/Login";
+import user1 from "../assets/user.png";
+import { useSelector } from "react-redux";
+import { Link, Navigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logoutFailure, logoutStart, logoutSuccess } from "../redux/userRedux";
+import { publicRequest } from "../requestMethods";
+
+const buttonLogin = styled.button`
+  &:hover {
+    background-color: black;
+    color: white;
+  }
+`;
 const Container = styled.div`
   @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;1,200;1,400;1,500&display=swap");
   position: sticky;
@@ -105,6 +118,26 @@ const MenuItem = styled.div`
 `;
 
 const Navbar = () => {
+  const user = useSelector((state) => state.user.currentUser);
+  const quantity = useSelector((state) => state.cart.quantity);
+  const dispatch = useDispatch();
+
+  const handleLogout = async () => {
+    dispatch(logoutStart());
+
+    try {
+      // Thực hiện các cuộc gọi API hoặc tác vụ để đăng xuất người dùng
+
+      // Ví dụ: Gửi cuộc gọi API để đăng xuất
+      await publicRequest.post("/auth/logout");
+
+      // Gửi action để cập nhật Redux store với trạng thái đăng xuất
+      dispatch(logoutSuccess());
+    } catch (err) {
+      // Xử lý lỗi nếu có
+      dispatch(logoutFailure());
+    }
+  };
   return (
     <Container>
       <Wrapper>
@@ -115,10 +148,19 @@ const Navbar = () => {
             style={{ height: "40px", width: "110px" }}
           />
         </Left>
+
         <Center>
-          <H1>TRANG CHỦ</H1>
-          <H1>SẢN PHẨM</H1>
-          <H1>GIỎ HÀNG</H1>
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <H1>TRANG CHỦ</H1>{" "}
+          </Link>
+          <Link to={`/products`} style={{ textDecoration: "none" }}>
+            {" "}
+            <H1>SẢN PHẨM</H1>{" "}
+          </Link>
+          <Link to="/cart" style={{ textDecoration: "none" }}>
+            {" "}
+            <H1>GIỎ HÀNG</H1>{" "}
+          </Link>
         </Center>
         <Right>
           {/* <MenuItem>REGISTER</MenuItem> */}
@@ -128,16 +170,69 @@ const Navbar = () => {
               <Search style={{ color: "gray", fontSize: 16 }} />
             </SearchContainer>
           </MenuItem>
+
+          {/* <Link element={user ? <Navigate to="/cart" /> : <Login />}>
+            <MenuItem>
+              <Badge badgeContent={quantity} color="primary">
+                <ShoppingCartOutlined />
+              </Badge>
+            </MenuItem>
+          </Link> */}
+          <Link to="/cart">
+            <MenuItem>
+              <Badge badgeContent={quantity} color="primary">
+                <ShoppingCartOutlined />
+              </Badge>
+            </MenuItem>
+          </Link>
+
+          {/* <MenuItem>
+            {{
+              if(user) {
+                <a href="" style={{ listStyle: "none" }}>
+                  {" "}
+                  <img src={user} alt="" />
+                </a>;
+              },
+            }}
+            {{
+              else {
+                 <button onClick={handleLogout}>Logout</button>
+              }
+            }}
+           
+          </MenuItem> */}
           <MenuItem>
-            <Badge badgeContent={4} color="primary">
-              <ShoppingCartOutlined />
-            </Badge>
-          </MenuItem>
-          <MenuItem>
-            <a href="" style={{ listStyle: "none" }}>
-              {" "}
-              <img src={user} alt="" />
-            </a>
+            {user ? (
+              <button
+                onClick={handleLogout}
+                style={{
+                  padding: "5px 15px",
+                  borderRadius: "5px",
+                  border: "1px solid #eeeeee",
+                  cursor: "pointer",
+                  backgroundColor: "transparent",
+                }}
+              >
+                Logout
+              </button>
+            ) : (
+              //   <a>{user.username}</a>
+              <Link to="login">
+                <button
+                  className="buttonLogin"
+                  style={{
+                    padding: "5px 15px",
+                    borderRadius: "5px",
+                    border: "1px solid #eeeeee",
+                    cursor: "pointer",
+                    backgroundColor: "transparent",
+                  }}
+                >
+                  Login
+                </button>
+              </Link>
+            )}
           </MenuItem>
         </Right>
       </Wrapper>

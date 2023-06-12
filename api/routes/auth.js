@@ -21,7 +21,14 @@ router.post("/register", async (req, res) => {
     res.status(500).json(err);
   }
 });
+router.post("/logout", (req, res) => {
+  // Khi người dùng đăng xuất, bạn có thể không cần thực hiện bất kỳ xử lý đặc biệt nào
+  // tùy thuộc vào yêu cầu của ứng dụng của bạn.
+  // Điều này có thể bao gồm việc xóa các thông tin phiên, hủy token, v.v.
 
+  // Ví dụ: không thực hiện bất kỳ xử lý đặc biệt nào, chỉ gửi phản hồi thành công.
+  res.status(200).json("Logout successful");
+});
 //LOGIN
 
 router.post("/login", async (req, res) => {
@@ -44,12 +51,12 @@ router.post("/login", async (req, res) => {
         isAdmin: user.isAdmin,
       },
       process.env.JWT_SEC,
-      {expiresIn:"3d"}
+      { expiresIn: "3d" }
     );
 
     const { password, ...others } = user._doc;
 
-    res.status(200).json({...others, accessToken});
+    res.status(200).json({ ...others, accessToken });
   } catch (err) {
     res.status(500).json(err);
   }

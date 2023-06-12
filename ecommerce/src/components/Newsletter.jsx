@@ -1,30 +1,36 @@
-import { Send } from "@material-ui/icons";
+// import { Send } from "@material-ui/icons";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import { mobile } from "../responsive";
-
+import emailjs from "@emailjs/browser";
 const Container = styled.div`
   height: 60vh;
-  background-color: #fcf5f5;
+  background-color: #f9f9f9;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
 `;
-const Title = styled.h1`
-  font-size: 70px;
+const Title = styled.h2`
+  font-size: 18px;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: "Poppins", sans-serif;
+  letter-spacing: 2px;
   margin-bottom: 20px;
 `;
 
 const Desc = styled.div`
-  font-size: 24px;
-  font-weight: 300;
+  font-family: "Poppins", sans-serif;
+  color: #757575;
+  font-size: 15px;
   margin-bottom: 20px;
   ${mobile({ textAlign: "center" })}
 `;
 
 const InputContainer = styled.div`
-  width: 50%;
-  height: 40px;
+  width: 45%;
+  height: 50px;
   background-color: white;
   display: flex;
   justify-content: space-between;
@@ -39,23 +45,62 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-  flex: 1;
+  flex: 3;
   border: none;
-  background-color: teal;
+  background-color: #000000;
   color: white;
 `;
 
 const Newsletter = () => {
+  const form = useRef();
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs.sendForm(
+      "service_9gwugqa",
+      "template_50meekj",
+      form.current,
+      "zjRByL0fWqBu1pstG"
+    );
+    e.target.reset();
+  };
   return (
     <Container>
-      <Title>Newsletter</Title>
-      <Desc>Get timely updates from your favorite products.</Desc>
-      <InputContainer>
-        <Input placeholder="Your email" />
-        <Button>
-          <Send />
-        </Button>
-      </InputContainer>
+      <Title>Feedback cửa hàng</Title>
+      <Desc>
+        Hãy đưa ra cảm ơn của bạn để cửa hàng tốt hơn mỗi ngày. Xin cảm ơn!
+      </Desc>
+      <form
+        className="contact__form"
+        ref={form}
+        onSubmit={sendEmail}
+        style={{ width: "600px", height: "200px" }}
+      >
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <InputContainer style={{ marginRight: "10px" }}>
+            <Input placeholder="Name" />
+          </InputContainer>
+          <InputContainer>
+            <Input placeholder="Your email" />
+          </InputContainer>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "15px",
+          }}
+        >
+          <InputContainer style={{ width: "550px" }}>
+            <Input placeholder="Nội dung đánh giá" />{" "}
+            <Button>
+              {/* <Send /> */}
+              Gửi feedback ngay!
+            </Button>
+          </InputContainer>{" "}
+        </div>
+      </form>
     </Container>
   );
 };

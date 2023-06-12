@@ -24,18 +24,21 @@ export const sliderItems = [
 export const categories = [
   {
     id: 1,
-    img: "https://images.pexels.com/photos/5886041/pexels-photo-5886041.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    title: "SHIRT STYLE!",
+    img: "https://i.pinimg.com/564x/e7/bc/ea/e7bcea06b531414c398363c2d5e590ef.jpg",
+    title: "WOMEN's FASHION!",
+    cat: "women",
   },
   {
     id: 2,
-    img: "https://images.pexels.com/photos/2983464/pexels-photo-2983464.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    title: "LOUNGEWEAR LOVE",
+    img: "https://i.pinimg.com/564x/b3/6c/4a/b36c4a597aeb034ae3e578bda266de06.jpg",
+    title: "MEN'S FASHION!",
+    cat: "men",
   },
   {
     id: 3,
-    img: "https://images.pexels.com/photos/5480696/pexels-photo-5480696.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-    title: "LIGHT JACKETS",
+    img: "https://i.pinimg.com/564x/1a/f1/5c/1af15c10f56e411c98c179c5607b3c16.jpg",
+    title: "FASHION ACCESSORIES!",
+    cat: "fashion accessories",
   },
 ];
 export const popularProducts = [
