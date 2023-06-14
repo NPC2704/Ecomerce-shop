@@ -4,13 +4,19 @@ import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { mobile } from "../responsive";
-// import StripeCheckout from "react-stripe-checkout";
+
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { userRequest } from "../requestMethods";
 import { useNavigate } from "react-router";
 import StripeCheckout from "react-stripe-checkout";
+import {
+  removeProduct,
+  decreaseQuantity,
+  increaseQuantity,
+} from "../redux/cartRedux";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 const KEY = process.env.REACT_APP_STRIPE;
 const Container = styled.div`
   @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;1,200;1,400;1,500&display=swap");
@@ -166,9 +172,12 @@ const Button = styled.button`
 `;
 
 const Cart = () => {
+  var number = 0;
   const cart = useSelector((state) => state.cart);
   const [stripeToken, setStripeToken] = useState(null);
+
   const Navigate = useNavigate();
+  const dispatch = useDispatch();
   const onToken = (token) => {
     setStripeToken(token);
   };
@@ -187,6 +196,20 @@ const Cart = () => {
     };
     stripeToken && makeRequest();
   }, [stripeToken, cart.total, Navigate]);
+  {
+    cart.products.map((product) => (number += product.quantity));
+  }
+  const handleRemove = (productId) => {
+    dispatch(removeProduct(productId));
+  };
+  const handleDecrease = (productId) => {
+    dispatch(decreaseQuantity(productId));
+  };
+
+  const handleIncrease = (productId) => {
+    dispatch(increaseQuantity(productId));
+  };
+
   return (
     <Container>
       <Navbar />
@@ -199,15 +222,14 @@ const Cart = () => {
             <TopButton>CONTINUE SHOPPING</TopButton>{" "}
           </Link>
           <TopTexts>
-            <TopText>Shopping Bag(2)</TopText>
-            <TopText>Your Wishlist (0)</TopText>
+            <TopText>Shopping Bag({number})</TopText>
           </TopTexts>
           <TopButton type="filled">CHECKOUT NOW</TopButton>
         </Top>
         <Bottom>
           <Info>
             {cart.products.map((product) => (
-              <Product style={{ marginBottom: "15px" }}>
+              <Product style={{ marginBottom: "15px" }} key={product.id}>
                 <ProductDetail>
                   <Image
                     src={product.img}
@@ -225,19 +247,37 @@ const Cart = () => {
                       style={{ border: "1px solid #e5e5e5" }}
                     />
                     <ProductSize style={{ color: "black" }}>
-                      <b>Size:</b> {product.size}
+                      <b>Size: {product.size}</b>
                     </ProductSize>
                   </Details>
                 </ProductDetail>
                 <PriceDetail>
                   <ProductAmountContainer>
-                    <Add />
+                    <Add
+                      onClick={() => handleIncrease(product._id)}
+                      style={{ cursor: "pointer" }}
+                    />
                     <ProductAmount>{product.quantity}</ProductAmount>
-                    <Remove />
+                    <Remove
+                      onClick={() => handleDecrease(product._id)}
+                      style={{ cursor: "pointer" }}
+                    />
                   </ProductAmountContainer>
                   <ProductPrice>
                     $ {product.price * product.quantity}
                   </ProductPrice>
+                  <div
+                    onClick={() => handleRemove(product._id)}
+                    style={{
+                      marginTop: "20px",
+                      border: "1px solid #d2d4d3",
+                      borderRadius: "50%",
+                      padding: "10px 14px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    X
+                  </div>
                 </PriceDetail>
               </Product>
             ))}

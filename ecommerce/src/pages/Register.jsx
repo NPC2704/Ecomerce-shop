@@ -5,6 +5,7 @@ import bg from "../assets/bg.jpg";
 import { signup } from "../redux/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import Login from "./Login";
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
@@ -45,7 +46,7 @@ const Input = styled.input`
 `;
 
 const Agreement = styled.span`
-  font-size: 12px;
+  font-size: 20px;
   margin: 20px 0px;
 `;
 
@@ -62,10 +63,16 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const dispatch = useDispatch();
   const { isFetching, error } = useSelector((state) => state.user);
   const handleClick = (e) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      // Xử lý khi mật khẩu không khớp
+      console.log("Passwords do not match");
+      return;
+    }
     signup(dispatch, { username, email, password });
   };
   return (
@@ -86,14 +93,35 @@ const Register = () => {
             type="password"
             onChange={(e) => setPassword(e.target.value)}
           />
-          {/* <Input placeholder="confirm password" /> */}
-          <Agreement>
-            By creating an account, I consent to the processing of my personal
-            data in accordance with the <b>PRIVACY POLICY</b>
-          </Agreement>
-          <Button onClick={handleClick} disabled={isFetching}>
-            CREATE
-          </Button>
+          <Input
+            placeholder="confirm password"
+            type="password"
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+          <div
+            style={{
+              display: "flex",
+              width: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: "20px",
+            }}
+          >
+            {" "}
+            <Agreement>
+              Already have account?
+              <Link to="/login" style={{ color: "black", marginLeft: "10px" }}>
+                <b>Login</b>
+              </Link>
+            </Agreement>
+            <Button
+              onClick={handleClick}
+              disabled={isFetching}
+              style={{ width: "130px", marginLeft: "30px" }}
+            >
+              CREATE
+            </Button>
+          </div>
         </Form>
       </Wrapper>
     </Container>

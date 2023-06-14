@@ -80,5 +80,14 @@ router.get("/", async (req, res) => {
     res.status(500).json(err);
   }
 });
+router.get("/search", async (req, res) => {
+  const searchTerm = req.query.title; // Lấy giá trị của tham số 'title' từ query string
 
+  try {
+    const product = await Product.findOne({ title: searchTerm });
+    res.status(200).json(product);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 module.exports = router;

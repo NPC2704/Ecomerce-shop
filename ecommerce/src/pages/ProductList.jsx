@@ -6,7 +6,8 @@ import Newsletter from "../components/Newsletter";
 import Footer from "../components/Footer";
 import { mobile } from "../responsive";
 import { useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect, useSelector } from "react";
+import axios from "axios";
 const Container = styled.div``;
 
 const Title = styled.h1`
@@ -44,10 +45,30 @@ const ProductList = () => {
   const cat = location.pathname.split("/")[2];
   const [filter, setFilter] = useState({});
   const [sort, setSort] = useState("Mới nhất");
+  const [searchResults, setSearchResults] = useState([]);
+  const searchTerm = useSelector((state) => state.search);
+
   const handleFilters = (e) => {
     const value = e.target.value;
     setFilter({ ...filter, [e.target.name]: value });
   };
+  useEffect(() => {
+    const searchProducts = async () => {
+      try {
+        const response = await axios.get("/api/products/search", {
+          params: {
+            title: searchTerm,
+          },
+        });
+        setSearchResults(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    searchProducts();
+  }, [searchTerm]);
+
   console.log(filter);
   return (
     <Container>
@@ -85,7 +106,12 @@ const ProductList = () => {
           </Select>
         </Filter>
       </FilterContainer>
-      <Products cat={cat} filter={filter} sort={sort} />
+      <Products
+        cat={cat}
+        filter={filter}
+        sort={sort}
+        searchResults={searchResults}
+      />
       <Newsletter />
       <Footer />
     </Container>

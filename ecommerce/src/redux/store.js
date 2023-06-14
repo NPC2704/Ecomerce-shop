@@ -1,6 +1,7 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import cartReducer from "./cartRedux";
 import userReducer from "./userRedux";
+import searchReducer from "./searchSlice";
 import {
   persistStore,
   persistReducer,
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({ user: userReducer, cart: cartReducer });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
+  search: searchReducer,
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

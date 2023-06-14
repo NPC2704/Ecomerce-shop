@@ -11,7 +11,7 @@ import { Link, Navigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logoutFailure, logoutStart, logoutSuccess } from "../redux/userRedux";
 import { publicRequest } from "../requestMethods";
-
+import { setSearchTerm } from "../redux/searchSlice";
 const buttonLogin = styled.button`
   &:hover {
     background-color: black;
@@ -118,10 +118,18 @@ const MenuItem = styled.div`
 `;
 
 const Navbar = () => {
+  var number = 0;
+  const searchTerm = useSelector((state) => state.search);
   const user = useSelector((state) => state.user.currentUser);
-  const quantity = useSelector((state) => state.cart.quantity);
+  const quantity = useSelector((state) => state.cart);
   const dispatch = useDispatch();
+  const handleSearch = (e) => {
+    dispatch(setSearchTerm(e.target.value));
+  };
 
+  {
+    quantity.products.map((product) => (number += product.quantity));
+  }
   const handleLogout = async () => {
     dispatch(logoutStart());
 
@@ -166,8 +174,11 @@ const Navbar = () => {
           {/* <MenuItem>REGISTER</MenuItem> */}
           <MenuItem>
             <SearchContainer>
-              <Input placeholder="Search" />
-              <Search style={{ color: "gray", fontSize: 16 }} />
+              <Input type="text" placeholder="Search" />
+              <Search
+                style={{ color: "gray", fontSize: 16 }}
+                onChange={handleSearch}
+              />
             </SearchContainer>
           </MenuItem>
 
@@ -180,7 +191,7 @@ const Navbar = () => {
           </Link> */}
           <Link to="/cart">
             <MenuItem>
-              <Badge badgeContent={quantity} color="primary">
+              <Badge badgeContent={number} color="primary">
                 <ShoppingCartOutlined />
               </Badge>
             </MenuItem>

@@ -4,12 +4,13 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Newsletter from "../components/Newsletter";
 import { mobile } from "../responsive";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { publicRequest } from "../requestMethods";
 import { addProduct } from "../redux/cartRedux";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 const Container = styled.div``;
 
 const Wrapper = styled.div`
@@ -131,7 +132,7 @@ const Product = () => {
   const [color, setColor] = useState("");
   const [size, setSize] = useState("");
   const dispatch = useDispatch();
-
+  const user = useSelector((state) => state.user.currentUser);
   useEffect(() => {
     const getProduct = async () => {
       try {
@@ -202,7 +203,13 @@ const Product = () => {
                 style={{ cursor: "pointer" }}
               />
             </AmountContainer>
-            <Button onClick={handleClick}>ADD TO CART</Button>
+            {user ? (
+              <Button onClick={handleClick}>ADD TO CART</Button>
+            ) : (
+              <Link to="/login">
+                <Button>ADD TO CART</Button>
+              </Link>
+            )}
           </AddContainer>
         </InfoContainer>
       </Wrapper>
