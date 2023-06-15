@@ -57,11 +57,14 @@ const ProductList = () => {
   useEffect(() => {
     const searchProducts = async () => {
       try {
-        const response = await axios.get("/api/products/search", {
-          params: {
-            title: searchTerm,
-          },
-        });
+        const response = await axios.get(
+          "https://apiec.onrender.com/api/products/search",
+          {
+            params: {
+              title: searchTerm,
+            },
+          }
+        );
         setSearchResults(response.data);
       } catch (error) {
         console.error(error);

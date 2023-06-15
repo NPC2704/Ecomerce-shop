@@ -11,7 +11,10 @@ import { publicRequest } from "../requestMethods";
 export const login = async (dispatch, user) => {
   dispatch(loginStart());
   try {
-    const res = await publicRequest.post("/auth/login", user);
+    const res = await publicRequest.post(
+      "https://apiec.onrender.com/api/auth/login",
+      user
+    );
     dispatch(loginSuccess(res.data));
   } catch (err) {
     dispatch(loginFailure());
@@ -20,7 +23,10 @@ export const login = async (dispatch, user) => {
 export const signup = async (dispatch, user) => {
   dispatch(signupStart());
   try {
-    const res = await publicRequest.post("/auth/register", user);
+    const res = await publicRequest.post(
+      "https://apiec.onrender.com/api/auth/register",
+      user
+    );
     dispatch(signupSuccess(res.data));
   } catch (err) {
     dispatch(signupFailure());

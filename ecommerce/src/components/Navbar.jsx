@@ -137,7 +137,7 @@ const Navbar = () => {
       // Thực hiện các cuộc gọi API hoặc tác vụ để đăng xuất người dùng
 
       // Ví dụ: Gửi cuộc gọi API để đăng xuất
-      await publicRequest.post("/auth/logout");
+      await publicRequest.post("https://apiec.onrender.com/api/auth/logout");
 
       // Gửi action để cập nhật Redux store với trạng thái đăng xuất
       dispatch(logoutSuccess());
