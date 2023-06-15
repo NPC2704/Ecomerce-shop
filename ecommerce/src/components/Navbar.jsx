@@ -190,11 +190,19 @@ const Navbar = () => {
             </MenuItem>
           </Link> */}
           <Link to="/cart">
-            <MenuItem>
-              <Badge badgeContent={number} color="primary">
-                <ShoppingCartOutlined />
-              </Badge>
-            </MenuItem>
+            {user ? (
+              <MenuItem>
+                <Badge badgeContent={number} color="primary">
+                  <ShoppingCartOutlined />
+                </Badge>
+              </MenuItem>
+            ) : (
+              <MenuItem>
+                <Badge badgeContent={"0"} color="primary">
+                  <ShoppingCartOutlined />
+                </Badge>
+              </MenuItem>
+            )}
           </Link>
 
           {/* <MenuItem>
