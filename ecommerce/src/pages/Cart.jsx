@@ -195,6 +195,7 @@ const Cart = () => {
           stripeData: res.data,
           products: cart,
         });
+        localStorage.removeItem("cart"); // Xóa key "cart" trong storage
       } catch {}
     };
     stripeToken && makeRequest();
