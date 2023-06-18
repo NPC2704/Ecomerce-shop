@@ -174,11 +174,8 @@ const Navbar = () => {
           {/* <MenuItem>REGISTER</MenuItem> */}
           <MenuItem>
             <SearchContainer>
-              <Input type="text" placeholder="Search" />
-              <Search
-                style={{ color: "gray", fontSize: 16 }}
-                onChange={handleSearch}
-              />
+              <Input type="text" placeholder="Search" onChange={handleSearch} />
+              <Search style={{ color: "gray", fontSize: 16 }} />
             </SearchContainer>
           </MenuItem>
 

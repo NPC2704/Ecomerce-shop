@@ -4,6 +4,7 @@ import banner from "../assets/banner.png";
 import img1 from "../assets/img_1.png";
 import img3 from "../assets/img_3.png";
 import img2 from "../assets/img_2.png";
+import { mobile } from "../responsive";
 const Wrapper = styled.div`
   width: 100%;
   height: 70vh;

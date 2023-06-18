@@ -184,10 +184,13 @@ const Cart = () => {
   useEffect(() => {
     const makeRequest = async () => {
       try {
-        const res = await userRequest.post("/checkout/payment", {
-          tokenId: stripeToken.id,
-          amount: 500,
-        });
+        const res = await userRequest.post(
+          "https://apiec.onrender.com/api/checkout/payment",
+          {
+            tokenId: stripeToken.id,
+            amount: 500,
+          }
+        );
         Navigate.push("/success", {
           stripeData: res.data,
           products: cart,

@@ -174,7 +174,7 @@ const Product = () => {
           <FilterContainer>
             <Filter>
               <FilterTitle style={{ marginRight: "15px" }}>Color</FilterTitle>
-              {product.color &&
+              {product.size &&
                 Array.isArray(product.color) &&
                 product.color.map((c) => (
                   <FilterColor color={c} key={c} onClick={() => setColor(c)} />
